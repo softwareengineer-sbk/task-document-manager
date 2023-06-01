@@ -9,7 +9,7 @@ import java.util.List;
 public class DBConnection {
     private Connection dbConnection;
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/test";
-    private static final String USER = "";
+    private static final String USER = "sardorbekkhalimboev";
     private static final String PASSWORD = "postgres";
 
     public DBConnection() throws ClassNotFoundException, SQLException {
