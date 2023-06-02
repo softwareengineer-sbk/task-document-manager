@@ -25,7 +25,7 @@ public class LocalDocumentManagerImpl implements DocumentManager {
 
         return null;
     }
-
+    @Override
     public List<Document> getAllFiles() throws SQLException, ClassNotFoundException {
         var query = "select * from documents";
         return new DBConnection().getAll(query);
@@ -57,6 +57,7 @@ public class LocalDocumentManagerImpl implements DocumentManager {
         }
     }
 
+    @Override
     public int saveFile(Document document, byte[] bytes) throws SQLException, ClassNotFoundException {
         var query = "insert into documents(id, size, name, data) values(?, ?, ?, ?)";
         return new DBConnection().save(query, document.id(), document.size(), document.name(), bytes);
@@ -96,6 +97,7 @@ public class LocalDocumentManagerImpl implements DocumentManager {
         }
     }
 
+    @Override
     public FileData getFile(String id) throws SQLException, ClassNotFoundException {
         var query = "SELECT * FROM documents WHERE id = ?";
         return new DBConnection().get(query, id);

@@ -1,7 +1,4 @@
-import app.Document;
-import app.FileData;
-import app.Loader;
-import app.LocalDocumentManagerImpl;
+import app.*;
 import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 
@@ -25,13 +22,15 @@ public class TestFileHandlerServlet {
     @Test
     public void testUploadWithValidFile() throws IOException, ServletException, SQLException, ClassNotFoundException {
 
-        var documentManager = mock(LocalDocumentManagerImpl.class);
+        var documentManager = mock(DocumentManager.class);
 
         when(documentManager.saveFile(any(Document.class), any())).thenReturn(1);
 
         File file = new File(PATH + FILE_TXT);
 
         Document document = Loader.provider().create().save(new FileInputStream(file), FILE_TXT);
+
+        verify(documentManager).saveFile(any(Document.class), any());
 
         assertNotNull(document);
 
@@ -40,9 +39,9 @@ public class TestFileHandlerServlet {
     }
 
     @Test
-    public void testUploadWithInValidFile() throws SQLException, ClassNotFoundException, IOException, ServletException {
+    public void testUploadWithInValidFile() throws SQLException, ClassNotFoundException {
 
-        var documentManager = mock(LocalDocumentManagerImpl.class);
+        var documentManager = mock(DocumentManager.class);
 
         when(documentManager.saveFile(any(Document.class), any())).thenReturn(1);
 
@@ -51,16 +50,21 @@ public class TestFileHandlerServlet {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> Loader.provider().create().save(new FileInputStream(file), FILE_PDF));
+
+        verify(documentManager).saveFile(any(Document.class), any());
+
     }
 
     @Test
     public void testGetAll() throws SQLException, ClassNotFoundException {
 
-        var documentManager = spy(LocalDocumentManagerImpl.class);
+        var documentManager = spy(DocumentManager.class);
 
         when(documentManager.getAllFiles()).thenReturn(new ArrayList<>());
 
         var documents = Loader.provider().create().getAll();
+
+        verify(documentManager).getAllFiles();
 
         assertNotNull(documents);
 
@@ -70,13 +74,16 @@ public class TestFileHandlerServlet {
     public void testGet() throws SQLException, ClassNotFoundException {
 
         var id = "689e86ec-819d-4963-becf-bad28f93ffb1";
+
         var fileName = "test.txt";
 
-        var documentManager = spy(LocalDocumentManagerImpl.class);
+        var documentManager = spy(DocumentManager.class);
 
         when(documentManager.getFile(anyString())).thenReturn(new FileData(fileName, new byte[]{}));
 
         var document = Loader.provider().create().get(id);
+
+        verify(documentManager).getFile(anyString());
 
         assertNotNull(document);
 

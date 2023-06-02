@@ -12,7 +12,13 @@ public interface DocumentManager {
 
     List<Document> getAll();
 
+    List<Document> getAllFiles() throws SQLException, ClassNotFoundException;
+
     Document save(InputStream inputStream, String filename) throws ServletException, IOException, SQLException, ClassNotFoundException;
 
+    int saveFile(Document document, byte[] bytes) throws SQLException, ClassNotFoundException;
+
     Document get(String id);
+
+    FileData getFile(String id) throws SQLException, ClassNotFoundException;
 }
